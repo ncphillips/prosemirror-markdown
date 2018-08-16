@@ -4,7 +4,7 @@ export class MarkdownSerializer {
   // :: (Object<(state: MarkdownSerializerState, node: Node, parent: Node, index: number)>, Object)
 
   // Construct a serializer with the given configuration. The `nodes`
-  // object should map node names in a given schema to function that
+  // object should map node names in a given schema to function thaft
   // take a serializer state and such a node, and serialize the node.
   //
   // The `marks` object should hold objects with `open` and `close`
@@ -96,7 +96,9 @@ export const defaultMarkdownSerializer = new MarkdownSerializer({
       }
   },
   text(state, node) {
-    state.text(node.text)
+    let marks = node.marks || []
+    let code = marks.find(mark => (mark.type.isCode))
+    state.text(node.text, !code)
   }
 }, {
   em: {open: "*", close: "*", mixable: true, expelEnclosingWhitespace: true},
